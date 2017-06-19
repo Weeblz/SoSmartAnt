@@ -1,12 +1,14 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-#include "ant.h"
 #include "cell.h"
+#include "utilities.h"
+#include <vector>
+class Ant;
 
 class Field {
 private:
-    QVector<QVector<Cell>> playingGrid;
+    std::vector<std::vector<Cell>> playingGrid;
     Position startingPoint;
     int applesLeft;
 

@@ -1,7 +1,15 @@
 #include "ant.h"
 
 Ant::Ant(Position initialLocation) : currentLocation(initialLocation),
-                                     currentDirrection(RIGHT), applesEaten(0), lastAction(FORWARD) {}
+                                     currentDirrection(RIGHT), applesEaten(0), currentAction(FORWARD) {}
+
+Ant::Ant(Position _currentLocation, const std::vector<State>& _states, Field* _grid) :
+                currentLocation(_currentLocation), states(_states),
+                currentDirrection(RIGHT), applesEaten(0), currentAction(FORWARD),
+                grid(_grid), currentState(_states.front())
+{
+
+}
 
 void Ant::turnLeft() {
      currentDirrection = currentDirrection ? (Direction)(((int)currentDirrection-1)%4) : UP;
@@ -20,12 +28,12 @@ void Ant::move() {
     switch (currentAction)
     {
     case FORWARD:
-        currentLocation = grid->nextCell(currentPosition, currentDirection);
+        currentLocation = grid->nextCell(currentLocation, currentDirrection);
         break;
-    case LEFT:
+    case LTURN:
         turnLeft();
         break;
-    case RIGHT:
+    case RTURN:
         turnRight();
         break;
     default:
@@ -34,7 +42,7 @@ void Ant::move() {
 }
 
 bool Ant::checkNextCell() {
-    return grid->isApple(nextCell(currentLocation, currentDirrection));
+    return grid->isApple(grid->nextCell(currentLocation, currentDirrection));
 }
 
 Action Ant::changeState(bool canSeeApple) {

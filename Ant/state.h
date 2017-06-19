@@ -4,14 +4,14 @@
 #include "decision.h"
 
 class State {
-private:
+public:
+    State();
+    State(Decision, Decision);
+
+    int makeDecision(bool, Action);
+public:
     Decision canSeeApple;
     Decision canSeeNoApple;
-public:
-    State(Desidion, Desidion);
-    State();
-private:
-    int makeDecision(bool, Action);
 };
 
 #endif // STATE_H

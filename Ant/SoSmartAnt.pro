@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     state.cpp \
     field.cpp \
     cell.cpp \
-    decision.cpp
+    decision.cpp \
+    evolution.cpp
 
 HEADERS  += mainwindow.h \
     ant.h \
@@ -37,6 +38,7 @@ HEADERS  += mainwindow.h \
     state.h \
     field.h \
     cell.h \
-    decision.h
+    decision.h \
+    evolution.h
 
 FORMS    += mainwindow.ui

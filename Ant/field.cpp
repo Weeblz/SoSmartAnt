@@ -1,9 +1,10 @@
 #include "field.h"
+#include "ant.h"
 #include <fstream>
 #include <string>
 
 Field::Field(Position _startingPoint) : startingPoint(_startingPoint), applesLeft(APPLES_COUNT){
-    playingGrid = QVector<QVector<Cell>>(32, QVector<Cell>(32, Cell()));
+    playingGrid = std::vector<std::vector<Cell>>(32, std::vector<Cell>(32, Cell()));
     initField();
     playingGrid[startingPoint.x][startingPoint.y] = PASSED;
 }
@@ -25,11 +26,11 @@ void Field::initField() {
 
 
 bool Field::isApple(Position toCheck) {
-    return gamingGrid[toCheck.x][toCheck.y].getType() == APPLE;
+    return playingGrid[toCheck.x][toCheck.y].getType() == APPLE;
 }
 
 void Field::eatApple(Position toEat) {
-    gamingGrid[toEat.x][toEat.y].setType(EMPTY);
+    playingGrid[toEat.x][toEat.y].setType(EMPTY);
     applesLeft--;
 }
 

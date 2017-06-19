@@ -1,10 +1,7 @@
 #include "state.h"
 
-State::State() {
-
-}
-
-State::State(Desision Apple, Desision NoApple) : canSeeApple(Apple), canSeeNoApple(NoApple) {}
+State::State() {}
+State::State(Decision Apple, Decision NoApple) : canSeeApple(Apple), canSeeNoApple(NoApple) {}
 
 int State::makeDecision(bool _canSeeApple, Action nextAction) {
     if(_canSeeApple) {
