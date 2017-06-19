@@ -8,7 +8,7 @@ Field::Field(Position _startingPoint) : startingPoint(_startingPoint), applesLef
     playingGrid[startingPoint.x][startingPoint.y] = PASSED;
 }
 
-//creating gaming grid same way as in assignment
+//creating gaming grid looking same way as in assignment
 //NOT FOR THE FAINT HEARTED!
 void Field::initField() {
     std::ifstream in("fieldinit.txt");
@@ -21,4 +21,35 @@ void Field::initField() {
         }
     }
     in.close();
+}
+
+
+bool Field::isApple(Position toCheck) {
+    return gamingGrid[toCheck.x][toCheck.y].getType() == APPLE;
+}
+
+void Field::eatApple(Position toEat) {
+    gamingGrid[toEat.x][toEat.y].setType(EMPTY);
+    applesLeft--;
+}
+
+Position Field::nextCell(Position currentPosition, Direction currentDirrection) {
+    switch(currentDirrection)
+    {
+    case UP:
+        currentPosition.y--;
+        if(currentPosition.y < 0) { currentPosition.y += GRID_SIZE; }
+        break;
+    case DOWN:
+        currentPosition.y = (currentPosition.y+1)%GRID_SIZE;
+        break;
+    case LEFT:
+        currentPosition.x = (currentPosition.x+1)%GRID_SIZE;
+        break;
+    case RIGHT:
+        currentPosition.x--;
+        if(currentPosition.x < 0) { currentPosition.x += GRID_SIZE; }
+        break;
+    }
+    return currentPosition;
 }

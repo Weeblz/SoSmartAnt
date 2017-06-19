@@ -13,6 +13,9 @@ private:
 public:
     Field(Position);
     void appleEaten() { applesLeft--; }
+    void eatApple(Position);
+    bool isApple(Position);
+    Position nextCell(Position, Direction);
 
 private:
     void initField();

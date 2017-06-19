@@ -1,0 +1,5 @@
+#include "decidion.h"
+
+Decidion::Decidion() {
+
+}

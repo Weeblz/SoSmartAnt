@@ -28,13 +28,15 @@ SOURCES += main.cpp\
     ant.cpp \
     state.cpp \
     field.cpp \
-    cell.cpp
+    cell.cpp \
+    decision.cpp
 
 HEADERS  += mainwindow.h \
     ant.h \
     utilities.h \
     state.h \
     field.h \
-    cell.h
+    cell.h \
+    decision.h
 
 FORMS    += mainwindow.ui
