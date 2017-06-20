@@ -42,3 +42,13 @@ HEADERS  += mainwindow.h \
     evolution.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    resources.qrc
+
+DISTFILES += \
+    fieldinit.txt
+
+CONFIG+= c++11
+
+QMAKE_CXXFLAGS += -std=c++11

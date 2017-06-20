@@ -3,9 +3,9 @@
 
 #include "utilities.h"
 #include "state.h"
-#include "field.h"
 #include <vector>
 
+class Field;
 class Ant {
 private:
     Position currentLocation;
@@ -17,7 +17,8 @@ private:
     Field* grid;
 
 public:
-    Ant(Position);
+    Ant();
+    Ant(Position, Field*);
     Ant(Position, const std::vector<State>&, Field*);
     void turnLeft();
     void turnRight();

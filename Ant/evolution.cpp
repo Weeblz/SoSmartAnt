@@ -1,44 +1,66 @@
 #include "evolution.h"
 #include "utilities.h"
 #include <ctime>
+#include <iostream>
 #include <cstdlib>
 #include <algorithm>
+#include <qdebug.h>
+
+std::vector<std::pair<std::vector<State>, int>> test;
 
 bool comparator(const std::pair<std::vector<State>, int>&a, const std::pair<std::vector<State>, int>&b) {
     return a.second>b.second;
 }
 
-Evolution::Evolution() : currentGeneration(0) {
+Evolution::Evolution() : currentGeneration(0), evolved(false) {
     srand(time(NULL));
     generation.reserve(GENERATION_SIZE * 2);
 }
 
+static int cnt = 0;
+
 std::vector<State> Evolution::evolve() {
     populate();
-    while (!evolved) changeGeneration();
+    while (!evolved) {
+        changeGeneration();
+    }
+    std::cout << "EVOLVED ANT IS " <<  maxFitness << std::endl;
     return bestBehavior;
 }
 
 void Evolution::populate() {
+    srand(time(NULL));
     std::vector<State> temp(STATE_COUNT);
     for (int i = 0; i < 2 * GENERATION_SIZE; i++){
         for (int j = 0; j < temp.size(); j++){
-            Decision canSeeFood((Action)(rand() % 3), rand() % STATE_COUNT);
-            Decision canSeeNoFood((Action)(rand() % 3), rand() % STATE_COUNT);
+            Decision canSeeFood((Action)((rand() % 3) + 1), rand() % STATE_COUNT);
+            Decision canSeeNoFood((Action)((rand() % 3) + 1), rand() % STATE_COUNT);
             temp[j] = State(canSeeFood, canSeeNoFood);
         }
         generation.push_back(std::make_pair(temp, -1));
     }
+    std::cout << "T" <<std::endl;
+    test = generation;
 }
 
 void Evolution::changeGeneration() {
     select();
+    std::cout << "TOP ANT IS " << generation.front().second << std::endl;
     crossoverAll();
-    evolved ? : currentGeneration++;
+    if(!evolved) currentGeneration++;
+    mutateAll();
+//    if(test == generation) {
+//        std::cout << "HAVENT CHANGED" << std::endl;
+//    }
+//        else {
+//            std::cout << "OK!" << std::endl;
+//        }
+//    test = generation;
 }
 
 void Evolution::mutate(std::pair<std::vector<State>, int>& mutant) {
     mutant.second = -1;
+    srand(time(NULL));
     int mutation = (rand() % 3) + 1;
     int randomState = rand() % mutant.first.size();
     bool randomTranslation = rand() % 2;
@@ -71,12 +93,14 @@ void Evolution::mutate(std::pair<std::vector<State>, int>& mutant) {
 
 
 void Evolution::mutateAll() {
+    srand(time(NULL));
     for (int i = 0; i < generation.size(); i++){
         if (rand() % 100 < MUTATION_PROBABILITY) mutate(generation[i]);
     }
 }
 
 void Evolution::crossover(const std::pair<std::vector<State>, int>& parent1, const std::pair<std::vector<State>, int>& parent2, int index) {
+    srand(time(NULL));
     std::vector<State> child1(STATE_COUNT);
     std::vector<State> child2(STATE_COUNT);
     int randomDecisionIndex;
@@ -113,12 +137,13 @@ void Evolution::crossover(const std::pair<std::vector<State>, int>& parent1, con
     //child2.currentState = child2.states.front();
 
     lock.lock();
-    (generation[index].first) = child1;
-    (generation[index + 1].first) = child2;
+    (generation[index]) = std::make_pair(child1, -1);
+    (generation[index + 1]) = std::make_pair(child2, -1);
     lock.unlock();
 }
 
 void Evolution::crossoverAll() {
+    srand(time(NULL));
     std::vector<int> parentsIndexes;
     parentsIndexes.reserve(generation.size() / 2);
     int parent1, parent2;
@@ -139,8 +164,12 @@ void Evolution::crossoverAll() {
 }
 
 void Evolution::select() {
+    std::cout << "t";
     recalculateEfficiency();
     std::sort(generation.begin(), generation.end(), comparator);
+
+    std::cout << generation.front().second << std::endl;
+    std::cout << generation[0].second << std::endl;
 
     if (generation.front().second >= APPLES_COUNT || currentGeneration >= NUMBER_OF_GENERATIONS){
         bestBehavior = generation.front().first;
@@ -164,7 +193,7 @@ void Evolution::recalculateEfficiency() {
 
 void Evolution::getEfficiency(std::pair<std::vector<State>, int>& ant) {
         lock.lock();
-        Field testingField(Position(0,0));
+        Field testingField(Position(0,0), ant.first);
         Ant subject(Position(0,0), ant.first, &testingField);
         lock.unlock();
         int steps = 0;

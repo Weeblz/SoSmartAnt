@@ -21,9 +21,8 @@ public:
     void operator=(CellType celltype);
     operator int();
 
-private:
-    CellType type;
 public:
+    CellType type;
     int cellFactor;
 };
 

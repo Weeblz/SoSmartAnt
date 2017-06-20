@@ -7,6 +7,7 @@ class Decision {
 public:
     Decision();
     Decision(Action, int);
+    bool operator==(const Decision&) const;
 public:
     Action action;
     int nextStateNumber;
