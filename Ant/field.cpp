@@ -6,17 +6,15 @@
 #include <qstring.h>
 #include <iostream>
 
-Field::Field(Position _startingPoint) : startingPoint(_startingPoint), applesLeft(APPLES_COUNT){
+Field::Field(Position _startingPoint) : startingPoint(_startingPoint), applesLeft(APPLES_COUNT), maxAntScore(0){
     playingGrid = std::vector<std::vector<Cell>>(32, std::vector<Cell>(32, Cell()));
     initField();
     playingGrid[startingPoint.x][startingPoint.y] = PASSED;
 
     ant = Ant(_startingPoint, this);
-
-    std::cout << "t";
 }
 
-Field::Field(Position _startingPoint, const std::vector<State>& states) : startingPoint(_startingPoint), applesLeft(APPLES_COUNT){
+Field::Field(Position _startingPoint, const std::vector<State>& states) : startingPoint(_startingPoint), applesLeft(APPLES_COUNT), maxAntScore(0){
     playingGrid = std::vector<std::vector<Cell>>(32, std::vector<Cell>(32, Cell()));
     initField();
     playingGrid[startingPoint.x][startingPoint.y] = PASSED;
@@ -24,10 +22,19 @@ Field::Field(Position _startingPoint, const std::vector<State>& states) : starti
     ant = Ant(_startingPoint, states, this);
 }
 
+void Field::operator=(const Field& field) {
+    startingPoint = field.startingPoint;
+    playingGrid = field.playingGrid;
+    ant = field.ant;
+    applesLeft = field.applesLeft;
+    maxAntScore = field.maxAntScore;
+}
+
 //creating gaming grid looking same way as in assignment
 //NOT FOR THE FAINT HEARTED!
 void Field::initField() {
-    std::ifstream in("D:\\Important Projects\\SoSmartAnt\\Ant\\fieldinit.txt");
+    std::ifstream in("..\\..\\Ant\\fieldinit.txt");
+    if(!in.is_open()) in.open("..\\Ant\\fieldinit.txt");
     std::string temp;
     for(int i=0; i<32; i++) {
         getline(in, temp);

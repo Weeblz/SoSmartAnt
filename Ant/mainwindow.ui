@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>781</width>
-    <height>627</height>
+    <width>847</width>
+    <height>729</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,55 +20,106 @@
       <x>10</x>
       <y>10</y>
       <width>661</width>
-      <height>611</height>
+      <height>661</height>
      </rect>
     </property>
    </widget>
    <widget class="QLabel" name="scoreLabel">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>680</x>
       <y>160</y>
-      <width>71</width>
-      <height>16</height>
+      <width>161</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
-     <string>sup</string>
+     <string/>
     </property>
    </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>680</x>
-      <y>10</y>
-      <width>86</width>
-      <height>84</height>
+      <y>250</y>
+      <width>161</width>
+      <height>72</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <widget class="QLabel" name="generationSize">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="numberOfGenerations">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="mutationProbability">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="numberOfStates">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>10</y>
+      <width>161</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QPushButton" name="evolveButton">
-         <property name="text">
-          <string>Evolve Ant</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QPushButton" name="evolveButton">
+           <property name="text">
+            <string>Evolve Ant</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="visualizeButton">
+           <property name="text">
+            <string>Vizualize</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="visualizeButton">
-         <property name="text">
-          <string>Vizualize</string>
+        <widget class="QSlider" name="horizontalSlider">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QSlider" name="horizontalSlider">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QLabel" name="antScore">
+       <property name="text">
+        <string>TextLabel</string>
        </property>
       </widget>
      </item>
@@ -80,7 +131,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>781</width>
+     <width>847</width>
      <height>21</height>
     </rect>
    </property>

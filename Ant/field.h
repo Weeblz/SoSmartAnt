@@ -8,26 +8,29 @@
 #include <vector>
 
 class Field {
+    friend class Ant;
 public:
     Ant ant;
 private:
     std::vector<std::vector<Cell>> playingGrid;
     Position startingPoint;
     int applesLeft;
+    int maxAntScore;
 
 public:
     Field(Position);
     Field(Position, const std::vector<State>&);
+    void operator=(const Field&);
     void appleEaten() { applesLeft--; }
     void eatApple(Position);
     void updateField();
+    void initField();
     bool isApple(Position);
     int getApplesLeft() { return applesLeft; }
+    int getMaxAntScore() { return maxAntScore; }
     Position nextCell(Position, Direction);
     std::vector<std::vector<Cell>> getPlayingGrid() { return playingGrid; }
 
-private:
-    void initField();
 };
 
 #endif // FIELD_H

@@ -9,13 +9,25 @@ Ant::Ant(Position initialLocation, Field* _grid) : currentLocation(initialLocati
                                      currentDirrection(RIGHT), applesEaten(0), currentAction(FORWARD), grid(_grid)
 {
     Evolution evolution;
-    states = evolution.evolve();
+    auto temp = evolution.evolve();
+    states = temp.first;
+    grid->maxAntScore = temp.second;
 }
 
 Ant::Ant(Position _currentLocation, const std::vector<State>& _states, Field* _grid) :
                 currentLocation(_currentLocation), states(_states),
                 currentDirrection(RIGHT), applesEaten(0), currentAction(FORWARD),
                 grid(_grid), currentState(_states.front()) {}
+
+void Ant::operator=(const Ant& a) {
+    currentLocation = a.currentLocation;
+    currentDirrection = a.currentDirrection;
+    currentState = a.currentState;
+    currentAction = a.currentAction;
+    applesEaten = a.applesEaten;
+    states = a.states;
+    grid = a.grid;
+}
 
 void Ant::turnLeft() {
      currentDirrection = currentDirrection ? (Direction)(((int)currentDirrection-1)%4) : UP;
@@ -27,7 +39,6 @@ void Ant::turnRight() {
 
 void Ant::move() {
     currentAction = changeState(checkNextCell());
-    //std::cout << currentDirrection << std::endl;
     if (grid->isApple(currentLocation)) {
         grid->eatApple(currentLocation);
         applesEaten++;

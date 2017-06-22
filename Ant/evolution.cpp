@@ -6,8 +6,6 @@
 #include <algorithm>
 #include <qdebug.h>
 
-std::vector<std::pair<std::vector<State>, int>> test;
-
 bool comparator(const std::pair<std::vector<State>, int>&a, const std::pair<std::vector<State>, int>&b) {
     return a.second>b.second;
 }
@@ -17,14 +15,11 @@ Evolution::Evolution() : currentGeneration(0), evolved(false) {
     generation.reserve(GENERATION_SIZE * 2);
 }
 
-static int cnt = 0;
-
-std::vector<State> Evolution::evolve() {
+std::pair<std::vector<State>, int> Evolution::evolve() {
     populate();
     while (!evolved) {
         changeGeneration();
     }
-    std::cout << "EVOLVED ANT IS " <<  maxFitness << std::endl;
     return bestBehavior;
 }
 
@@ -39,23 +34,13 @@ void Evolution::populate() {
         }
         generation.push_back(std::make_pair(temp, -1));
     }
-    std::cout << "T" <<std::endl;
-    test = generation;
 }
 
 void Evolution::changeGeneration() {
     select();
-    std::cout << "TOP ANT IS " << generation.front().second << std::endl;
     crossoverAll();
     if(!evolved) currentGeneration++;
     mutateAll();
-//    if(test == generation) {
-//        std::cout << "HAVENT CHANGED" << std::endl;
-//    }
-//        else {
-//            std::cout << "OK!" << std::endl;
-//        }
-//    test = generation;
 }
 
 void Evolution::mutate(std::pair<std::vector<State>, int>& mutant) {
@@ -133,9 +118,6 @@ void Evolution::crossover(const std::pair<std::vector<State>, int>& parent1, con
         child2[i] = secondChildState;
     }
 
-    //child1.currentState = child1.states.front();
-    //child2.currentState = child2.states.front();
-
     lock.lock();
     (generation[index]) = std::make_pair(child1, -1);
     (generation[index + 1]) = std::make_pair(child2, -1);
@@ -164,15 +146,11 @@ void Evolution::crossoverAll() {
 }
 
 void Evolution::select() {
-    std::cout << "t";
     recalculateEfficiency();
     std::sort(generation.begin(), generation.end(), comparator);
 
-    std::cout << generation.front().second << std::endl;
-    std::cout << generation[0].second << std::endl;
-
     if (generation.front().second >= APPLES_COUNT || currentGeneration >= NUMBER_OF_GENERATIONS){
-        bestBehavior = generation.front().first;
+        bestBehavior = generation.front();
         evolved = true;
         return;
     }
@@ -183,7 +161,6 @@ void Evolution::select() {
 void Evolution::recalculateEfficiency() {
     for (int i = 0; i < generation.size(); i++){
         if (generation[i].second < 0){
-            //fitness(currentGeneration[i]);
             threads.push_back(std::thread([=] {getEfficiency(generation[i]);}));
         }
     }

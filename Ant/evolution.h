@@ -14,7 +14,7 @@ private:
     std::vector<std::thread> threads;                               // vector containing threads of evolution
 
     std::vector<std::pair<std::vector<State>, int>> generation;     // current state of ant "colony" (or generation, whatever). Contains behavior rules and it's efficiency.
-    std::vector<State> bestBehavior;                                // set of dicision making rules for the most adapted ant.
+    std::pair<std::vector<State>, int> bestBehavior;                                // set of dicision making rules for the most adapted ant.
 
     bool evolved;                                                   // last generation is reached or ant evolved and able to eat all apples on the gaming grid.
     int maxFitness;                                                 // estimation of how good is the most adapted ant in eating apples.
@@ -24,7 +24,7 @@ private:
 public:
     Evolution();
 
-    std::vector<State> evolve();                                    // begin the evolving process, mutating and crossovering generations of ants.
+    std::pair<std::vector<State>, int> evolve();                                    // begin the evolving process, mutating and crossovering generations of ants.
                                                                     // @return: set of dicision making rules for the most adapted ant.
 private:
     void populate();                                                // create generation number 0 with random set of rules.

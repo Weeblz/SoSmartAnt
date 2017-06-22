@@ -10,7 +10,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow), currentScene(nullptr)
 {
     ui->setupUi(this);
+    ui->generationSize->setText("Generation size: " + QString::number(GENERATION_SIZE));
+    ui->numberOfGenerations->setText("Number of generations: " + QString::number(NUMBER_OF_GENERATIONS));
+    ui->mutationProbability->setText("Mutation probability: " + QString::number(MUTATION_PROBABILITY));
+    ui->numberOfStates->setText("Number of ant states: " + QString::number(STATE_COUNT));
 
+    ui->antScore->setText("NOT DEFINED (evolve first)");
     ui->visualizeButton->setEnabled(false);
     image = QImage(":/img/res/grid.jpg");
 }
@@ -26,13 +31,12 @@ void MainWindow::drawPoint(QPainter& p, int fieldX, int fieldY, QBrush color) {
     QBrush brush(color);
     p.setBrush(brush);
 
-    int x = 20 * fieldX + 6;
-    int y = 20 * fieldY + 6;
-    p.drawRect(x, y, 10, 10);
+    int x = 20 * fieldX + 2;
+    int y = 20 * fieldY + 2;
+    p.drawRect(x, y, 18, 18);
 }
 
 void MainWindow::drawField(QPixmap& image, const std::vector<std::vector<Cell>>& cells, Direction antDirection) {
-    //auto scene = std::make_shared<QGraphicsScene>(this);
     if(currentScene) delete currentScene;
     currentScene = new QGraphicsScene(this);
     QPainter p(&image);
@@ -68,6 +72,10 @@ void MainWindow::drawField(QPixmap& image, const std::vector<std::vector<Cell>>&
 }
 
 void MainWindow::onEvolveButton() {
+    if(currentScene) {
+        delete currentScene;
+        currentScene = nullptr;
+    }
     ui->evolveButton->setText("Evolving...");
     ui->evolveButton->setEnabled(false);
     ui->visualizeButton->setEnabled(false);
@@ -75,8 +83,6 @@ void MainWindow::onEvolveButton() {
 }
 
 void MainWindow::onVisualizeButton() {
-    //qDebug() << visualizedSteps;
-
     if (stopVis){
         ui->evolveButton->setEnabled(false);
         ui->visualizeButton->setText("Stop");
@@ -96,11 +102,12 @@ void MainWindow::timerGenerateField() {
     stopVis = true;
     gameField = new Field(Position(0, 0));
 
-    ui->evolveButton->setText("Regenerate");
+    ui->evolveButton->setText("Reset and evolve");
     ui->visualizeButton->setText("Visualize");
+    ui->antScore->setText("Best ant score is: " + QString::number(gameField->getMaxAntScore()));
     ui->evolveButton->setEnabled(true);
     ui->visualizeButton->setEnabled(true);
-    ui->scoreLabel->setText(QString("Steps: 0\n\nApples: 0"));
+    ui->scoreLabel->setText(QString("Steps: 0"));
 }
 
 void MainWindow::timerMoveAnt() {
@@ -115,9 +122,8 @@ void MainWindow::timerMoveAnt() {
 
     visualizedSteps++;
 
-    int eatenApples = APPLES_COUNT - gameField->getApplesLeft();
     QString str;
-    str.sprintf("Steps: %d\n\nApples: %d", visualizedSteps, eatenApples);
+    str.sprintf("Steps: %d", visualizedSteps);
     ui->scoreLabel->setText(str);
 
     if (visualizedSteps >= 200){

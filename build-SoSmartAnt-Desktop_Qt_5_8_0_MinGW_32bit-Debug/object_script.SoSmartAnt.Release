@@ -1,0 +1,12 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\ant.o
+./release\state.o
+./release\field.o
+./release\cell.o
+./release\decision.o
+./release\evolution.o
+./release\qrc_resources.o
+./release\moc_mainwindow.o
+);

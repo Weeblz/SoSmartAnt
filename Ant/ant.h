@@ -20,6 +20,8 @@ public:
     Ant();
     Ant(Position, Field*);
     Ant(Position, const std::vector<State>&, Field*);
+    //~Ant();
+    void operator=(const Ant&);
     void turnLeft();
     void turnRight();
     void move();

@@ -3,10 +3,11 @@
 
 #define APPLES_COUNT 89
 #define GRID_SIZE 32
+
 #define GENERATION_SIZE 100
-#define NUMBER_OF_GENERATIONS 30
+#define NUMBER_OF_GENERATIONS 200
 #define MUTATION_PROBABILITY 5
-#define STATE_COUNT 11 // how many different states every ant will have
+#define STATE_COUNT 7 // how many different states every ant will have
 
 struct Position {
     int x;
